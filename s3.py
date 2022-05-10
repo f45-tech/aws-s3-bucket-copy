@@ -30,7 +30,8 @@ for page in pages:
                 'Bucket': s3_bucket_src,
                 'Key': object_key
             },
-            Key=object_key
+            Key=object_key,
+            ServerSideEncryption=AES256
         )
         data = {
             'AccessControlPolicy': {
