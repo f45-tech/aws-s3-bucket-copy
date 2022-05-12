@@ -3,7 +3,7 @@
 import boto3
 
 # Use whatever you have configured
-#aws = boto3.Session(profile_name='')
+aws = boto3.Session(profile_name='sandbox-admin')
 #aws = boto3.Session(
 # aws_access_key_id='',
 # aws_secret_access_key='',
@@ -13,8 +13,8 @@ import boto3
 s3 = aws.client('s3')
 
 # Fill in source and destination bucket
-s3_bucket_src = ""
-s3_bucket_dest = ""
+s3_bucket_src = "sandbox-s3-copy-test-deleteme-05111714"
+s3_bucket_dest = "sandbox-s3-copy-test-deleteme-05111714-dest"
 
 paginator = s3.get_paginator('list_objects')
 pages = paginator.paginate(Bucket=s3_bucket_src)
@@ -31,7 +31,7 @@ for page in pages:
                 'Key': object_key
             },
             Key=object_key,
-            ServerSideEncryption=AES256
+            ServerSideEncryption='AES256'
         )
         data = {
             'AccessControlPolicy': {
