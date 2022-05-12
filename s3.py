@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import boto3
+import sys, boto3
 
 # Use whatever you have configured
 aws = boto3.Session(profile_name='sandbox-admin')
@@ -13,8 +13,10 @@ aws = boto3.Session(profile_name='sandbox-admin')
 s3 = aws.client('s3')
 
 # Fill in source and destination bucket
-s3_bucket_src = "sandbox-s3-copy-test-deleteme-05111714"
-s3_bucket_dest = "sandbox-s3-copy-test-deleteme-05111714-dest"
+# s3_bucket_src = "sandbox-s3-copy-test-deleteme-05111714"
+# s3_bucket_dest = "sandbox-s3-copy-test-deleteme-05111714-dest"
+s3_bucket_src = str(sys.argv[1])
+s3_bucket_dest = str(sys.argv[2])
 
 paginator = s3.get_paginator('list_objects')
 pages = paginator.paginate(Bucket=s3_bucket_src)
