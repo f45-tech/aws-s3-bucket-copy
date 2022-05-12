@@ -13,8 +13,6 @@ aws = boto3.Session(profile_name='sandbox-admin')
 s3 = aws.client('s3')
 
 # Fill in source and destination bucket
-# s3_bucket_src = "sandbox-s3-copy-test-deleteme-05111714"
-# s3_bucket_dest = "sandbox-s3-copy-test-deleteme-05111714-dest"
 s3_bucket_src = str(sys.argv[1])
 s3_bucket_dest = str(sys.argv[2])
 
