@@ -3,7 +3,7 @@
 import sys, boto3
 
 # Use whatever you have configured
-aws = boto3.Session(profile_name='sandbox-admin')
+aws = boto3.Session(profile_name='bywave')
 #aws = boto3.Session(
 # aws_access_key_id='',
 # aws_secret_access_key='',
@@ -24,20 +24,21 @@ for page in pages:
         object_acl = s3.get_object_acl(Bucket=s3_bucket_src, Key=object_key)
         print(obj['Key'])
 
-        s3.copy_object(
-            Bucket=s3_bucket_dest,
-            CopySource={
-                'Bucket': s3_bucket_src,
-                'Key': object_key
-            },
-            Key=object_key,
-            ServerSideEncryption='AES256'
-        )
-        data = {
-            'AccessControlPolicy': {
-                'Owner': object_acl['Owner'],
-                'Grants': object_acl['Grants']
+        if not object_key.startswith('logs/'):
+            s3.copy_object(
+                Bucket=s3_bucket_dest,
+                CopySource={
+                    'Bucket': s3_bucket_src,
+                    'Key': object_key
+                },
+                Key=object_key,
+                ServerSideEncryption='AES256'
+            )
+            data = {
+                'AccessControlPolicy': {
+                    'Owner': object_acl['Owner'],
+                    'Grants': object_acl['Grants']
+                }
             }
-        }
-        print(data)
-        s3.put_object_acl(**data, Bucket=s3_bucket_dest, Key=object_key)
+            print(data)
+            s3.put_object_acl(**data, Bucket=s3_bucket_dest, Key=object_key)
